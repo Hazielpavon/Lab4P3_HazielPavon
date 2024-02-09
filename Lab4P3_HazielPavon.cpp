@@ -87,7 +87,7 @@ void reservarMatriz(char**& matriz, int filas, int columnas) {
 		matriz[i] = new char[columnas];
 	}
 }
-
+// aca lleno la matriz y la imprimo 
 void llenarMatriz(char** matriz, int filas, int columnas) {
 	srand(time(NULL));
 	for (int i = 0; i < filas; ++i) {
@@ -98,33 +98,52 @@ void llenarMatriz(char** matriz, int filas, int columnas) {
 		cout << endl; 
 	}
 }
-
-
+// este metodo me sirve 1 para guardar memoria de otra matriz que es la transpuesta de mi matriz para poder encontrar 
+// palabras de forma vertical dentro de mi matriz 
+char** transs(int filas, int columnas) {
+	char** transpuesta = new char* [columnas];
+	for (int i = 0; i < columnas; ++i) {
+		transpuesta[i] = new char[filas];
+	}
+	return transpuesta;
+}
 bool buscarPalabra(char** matriz, int filas, int columnas, string palabra) {
 	// Búsqueda horizontal
+	bool vali1 = false;
 	for (int i = 0; i < filas; ++i) {
 		string horizontal;
 		for (int j = 0; j < columnas; ++j) {
 			horizontal += matriz[i][j];
-		}
-		if (horizontal == palabra) {
-			return true;
+			if (horizontal[j] == palabra[j]) {
+				vali1 = true;
+				break;
+			}
 		}
 	}
 
 	// Búsqueda vertical
-	for (int j = 0; j < columnas; ++j) {
+	bool vali2 = false;
+	char** trans = transs(filas, columnas);
+	for (int i = 0; i < columnas; ++i) {
 		string vertical;
-		for (int i = 0; i < filas; ++i) {
-			vertical += matriz[i][j];
+		for (int j = 0; j < filas; ++j) {
+			vertical += matriz[j][i];
+			if (vertical[j] == palabra[j]) {
+				vali2 = true;
+				break;
+			}
 		}
-		if (vertical == palabra) {
-			return true;
-		}
+
 	}
 
-	return false;
+	if (vali1 || vali2) {
+		return true; 
+	}
+	else {
+		return false; 
+	}
 }
+
 
 void ejercicio2() {
 	int filas, columnas;
@@ -151,10 +170,10 @@ void ejercicio2() {
 	cout << "Ingrese la palabra que desea buscar: ";
 	cin >> palabra;
 	if (buscarPalabra(matriz, filas, columnas, palabra)) {
-		cout << "La palabra se encontró en la sopa de letras." << endl;
+		cout << "La palabra: " << palabra << ", se encontro en la sopa de letras." << endl;
 	}
 	else {
-		cout << "La palabra no se encontró en la sopa de letras." << endl;
+		cout << "La palabra: " << palabra << ", NO se encontro en la sopa de letras." << endl;
 	}
 	for (int i = 0; i < filas; ++i) {
 		delete[] matriz[i];
