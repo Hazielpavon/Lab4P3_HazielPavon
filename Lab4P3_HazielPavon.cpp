@@ -2,13 +2,12 @@
 #include <stdlib.h>
 using namespace std;
 void reservarMatrizEntero(int**& puntero_matriz, int n) {
-	puntero_matriz = new int* [n];
+	puntero_matriz = new int* [n]; // filas
 	for (int i = 0; i < n; i++)
 	{
 		puntero_matriz[i] = new int[n]; // columnas 
 	}
 }
-
 void LlenarMatrizEnteros(int**& punteromat, int n) {
 	srand((unsigned)time(NULL));
 	for (int i = 0; i < n; i++)
@@ -22,7 +21,7 @@ void LlenarMatrizEnteros(int**& punteromat, int n) {
 				cout << " " << "[" << punteromat[i][j];
 			}
 			else if (j == n - 1) {
-				cout << punteromat[i][j] << " ]" << " ";
+				cout << punteromat[i][j] << "]";
 			}
 			else {
 				cout << " " << punteromat[i][j] << " ";
@@ -30,26 +29,28 @@ void LlenarMatrizEnteros(int**& punteromat, int n) {
 		}
 		cout << endl;
 	}
+	// aca lleno la matriz y de paso la imprimo 
 }
-
-int calcularInversaMatematica(int**& punteromat, int n, int resp) {
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < n; j++)
-		{
-			if (j == i) {
-				resp = punteromat[i][j]; 
-			}
-
-			if (j - i == n) {
-				resp = punteromat[i][j];
+int calcularInversaMatematica(int**& punteromat, int n) {
+	int resp = 0;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			if (i == j) {
+				resp += punteromat[i][j];
 			}
 		}
 	}
-	return resp; 
+	for (int p = 0; p < n; p++) {
+		for (int l = 0; l < n; l++) {
+			if (p + l == n - 1) {
+				resp += punteromat[p][l];
+			}
+		}
+	}
+
+	return resp;
+// hago los calculos necesarios 
 }
-
-
 void ejercicio1() {
 	int num;
 	bool val = false;
@@ -61,18 +62,17 @@ void ejercicio1() {
 			val = true;
 		}
 	}
-	int resp = 0;
+
 	int** puntero_matriz;
 	reservarMatrizEntero(puntero_matriz, num);
 	LlenarMatrizEnteros(puntero_matriz, num);
-	resp = calcularInversaMatematica(puntero_matriz, num, resp);
-
-	cout << ""
-
-		for (int i = 0; i < num; i++) {
-			delete[] puntero_matriz[i];
-		}
+	// consigue cada dato 
+	cout << "La suma de la diagonal regular y la inversa es: " << calcularInversaMatematica(puntero_matriz, num) << endl;
+	for (int i = 0; i < num; i++) {
+		delete[] puntero_matriz[i];
+	}
 	delete[] puntero_matriz;
+	// liberando memoria
 }
 
 void ejercicio2() {
